@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class Objective : MonoBehaviour
 {
@@ -14,6 +17,7 @@ public class Objective : MonoBehaviour
 
     public bool isCompleted { get; private set; }
     public bool isBlocking() => !(isOptional || isCompleted);
+    public int next_scene;
 
     public UnityAction<UnityActionUpdateObjective> onUpdateObjective;
 
@@ -49,6 +53,7 @@ public class Objective : MonoBehaviour
         onUpdateObjective.Invoke(new UnityActionUpdateObjective(this, descriptionText, counterText, true, notificationText));
 
         // unregister this objective form both HUD managers
+        SceneManager.LoadScene(sceneBuildIndex: next_scene);
         m_ObjectiveHUDManger.UnregisterObjective(this);
         m_NotificationHUDManager.UnregisterObjective(this);
     }
